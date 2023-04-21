@@ -275,6 +275,8 @@ def detect_target_chip(map_file: Iterable) -> str:
     RE_TARGET_CMAKEv4x = re.compile(r'project_elf_src_(\S*)\.c.obj')
     # For back-compatible with make
     RE_TARGET_MAKE = re.compile(r'^LOAD .*?/xtensa-([^-]+)-elf/')
+    # For PIO and RISC-V
+    RE_TARGET_PIO = re.compile(r'^LOAD .*?/framework-arduinoespressif32/tools/sdk/([^-]+)/lib/')
 
     for line in map_file:
         match_target = RE_TARGET.search(line)
@@ -286,6 +288,10 @@ def detect_target_chip(map_file: Iterable) -> str:
             return match_target.group(1)
 
         match_target = RE_TARGET_MAKE.search(line)
+        if match_target:
+            return match_target.group(1)
+        
+        match_target = RE_TARGET_PIO.search(line)
         if match_target:
             return match_target.group(1)
 

@@ -1,1 +1,1 @@
-include esp_idf_size/chip_info/*
+include tasmota_metrics/chip_info/*

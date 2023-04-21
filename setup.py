@@ -25,14 +25,14 @@ def get_long_description():
 
 
 setup(
-    name="esp-idf-size",
-    version=get_version("esp_idf_size/__init__.py"),
+    name="tasmota-metrics",
+    version=get_version("tasmota_metrics/__init__.py"),
     author="Espressif Systems",
     author_email="",
     description="Firmware size analysis for ESP-IDF",
     long_description_content_type="text/markdown",
     long_description=get_long_description(),
-    url="https://github.com/espressif/esp-idf-size",
+    url="https://github.com/jason2866/tasmota-metrics",
     packages=find_packages(),
     python_requires=">=3.7",
     install_requires=["pyyaml"],

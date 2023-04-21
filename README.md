@@ -1,4 +1,5 @@
-# esp-idf-size
+
+# tasmota-metrics is based on esp-idf-size
 
 The ```esp-idf-size``` package is part of the [ESP-IDF](https://github.com/espressif/esp-idf) SDK for Espressif products and is automatically installed.
 
