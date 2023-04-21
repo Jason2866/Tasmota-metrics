@@ -228,7 +228,7 @@ def format_json(json_object: Dict) -> str:
     return json.dumps(json_object,
                       allow_nan=True,
                       indent=GLOBAL_JSON_INDENT,
-                      separators=GLOBAL_JSON_SEPARATORS) + os.linesep
+                      separators=GLOBAL_JSON_SEPARATORS) + "\n"
 
 
 def load_map_data(map_file: TextIO) -> Tuple[str, Dict, Dict]:
@@ -290,7 +290,7 @@ def detect_target_chip(map_file: Iterable) -> str:
         match_target = RE_TARGET_MAKE.search(line)
         if match_target:
             return match_target.group(1)
-        
+
         match_target = RE_TARGET_PIO.search(line)
         if match_target:
             return match_target.group(1)
@@ -854,7 +854,7 @@ def get_summary(path: str, segments: Dict, sections: Dict, target: str, output_f
             line_format = '{:60}{:>15}{:>15} {}'  # Width for a, b, c, d columns
 
         def print_in_columns(a: str, b: Optional[str]='', c: Optional[str]='', d: Optional[str]='') -> str:
-            return line_format.format(a, b, c, d).rstrip() + os.linesep
+            return line_format.format(a, b, c, d).rstrip() + "\n"
 
         output = ''
         if diff_en:
@@ -1002,10 +1002,10 @@ def get_detailed_sizes(sections: Dict, key: str, header: str, output_format: str
     else:
         def _get_header_format(disp_list: List=display_name_list, output_format: str='') -> str:
             if output_format == 'csv':
-                return '{},' * (len(disp_list) - 1) + '{}' + os.linesep
+                return '{},' * (len(disp_list) - 1) + '{}' + "\n"
             len_list = [len(x) for x in disp_list]
             len_list.insert(0, 24)
-            return ' '.join(['{:>%d}' % x for x in len_list]) + os.linesep
+            return ' '.join(['{:>%d}' % x for x in len_list]) + "\n"
 
         def _get_output(data: Dict[str, Dict[str, int]], selection: Collection, output_format: str,
                         key_list: List=ordered_key_list, disp_list: List=display_name_list) -> str:
@@ -1033,14 +1033,14 @@ def get_detailed_sizes(sections: Dict, key: str, header: str, output_format: str
         def _get_header_format_diff(disp_list: List=display_name_list, columns: bool=False, output_format: str='') -> str:
             if output_format == 'csv':
                 if columns:
-                    return '{},' * len(disp_list) + '{}' + os.linesep
+                    return '{},' * len(disp_list) + '{}' + "\n"
                 # This makes sure that every archive in the header has 3 columns (curr, reference and diff)
-                return '{},,,' * len(disp_list) + '{}' + os.linesep
+                return '{},,,' * len(disp_list) + '{}' + "\n"
             if columns:
                 len_list = (24, ) + (7, ) * 3 * len(disp_list)
-                return '|'.join(['{:>%d}' % x for x in len_list]) + os.linesep
+                return '|'.join(['{:>%d}' % x for x in len_list]) + "\n"
             len_list = (24, ) + (23, ) * len(disp_list)
-            return ' '.join(['{:>%d}' % x for x in len_list]) + os.linesep
+            return ' '.join(['{:>%d}' % x for x in len_list]) + "\n"
 
         def _get_output_diff(curr: Dict, ref: Dict, output_format: str, key_list: List=ordered_key_list, disp_list: List=display_name_list) -> str:
             # First header without Current/Ref/Diff columns
@@ -1061,7 +1061,7 @@ def get_detailed_sizes(sections: Dict, key: str, header: str, output_format: str
                 # When formatting with CSV we have 3 entries per key (curr, reference and diff)
                 f_print = ('<C>', '<R>', '<C>-<R>') * len(key_list) * 3
                 output += header_format.format('', *f_print)
-                line_format = '{},' * len(disp_list) * 3 + '{}' + os.linesep
+                line_format = '{},' * len(disp_list) * 3 + '{}' + "\n"
 
             for key, data_info in curr.items():
                 try:
@@ -1091,7 +1091,7 @@ def get_detailed_sizes(sections: Dict, key: str, header: str, output_format: str
 
             return output
 
-        output = 'Per-{} contributions to ELF file:{}'.format(key, os.linesep)
+        output = 'Per-{} contributions to ELF file:{}'.format(key, "\n")
 
         if diff_en:
             output += _get_output_diff(current, reference, output_format)
@@ -1102,11 +1102,11 @@ def get_detailed_sizes(sections: Dict, key: str, header: str, output_format: str
             only_in_reference = in_reference - in_current
 
             if len(only_in_current) > 0:
-                output += 'The following entries are present in <CURRENT> only:{}'.format(os.linesep)
+                output += 'The following entries are present in <CURRENT> only:{}'.format("\n")
                 output += _get_output(current, only_in_current, output_format)
 
             if len(only_in_reference) > 0:
-                output += 'The following entries are present in <REFERENCE> only:{}'.format(os.linesep)
+                output += 'The following entries are present in <REFERENCE> only:{}'.format("\n")
                 output += _get_output(reference, only_in_reference, output_format)
         else:
             output += _get_output(current, current, output_format)
@@ -1181,20 +1181,20 @@ def get_archive_symbols(sections: Dict, archive: str, output_format: str, sectio
 
             names_max_len, numbers_max_len  = _get_max_len(section_symbols)
             if output_format == 'csv':
-                line_format = '{},{}' + os.linesep
+                line_format = '{},{}' + "\n"
             else:
-                line_format = '    {:<%d} : {:>%d}' % (names_max_len,numbers_max_len) + os.linesep
+                line_format = '    {:<%d} : {:>%d}' % (names_max_len,numbers_max_len) + "\n"
 
             for t, s in section_symbols.items():
-                output += '{}Symbols from section: {}{}'.format(os.linesep, t, os.linesep)
+                output += '{}Symbols from section: {}{}'.format("\n", t, "\n")
                 item_pairs = _get_item_pairs(t, s)
                 for key, val in item_pairs.items():
                     output += line_format.format(key, val)
                 section_total = sum([val for _, val in item_pairs.items()])
-                output += 'Section total: {}{}'.format(section_total, os.linesep)
+                output += 'Section total: {}{}'.format(section_total, "\n")
             return output
 
-        output = '{}Symbols within the archive: {} (Not all symbols may be reported){}'.format(os.linesep, archive, os.linesep)
+        output = '{}Symbols within the archive: {} (Not all symbols may be reported){}'.format("\n", archive, "\n")
         if diff_en:
 
             def _generate_line_tuple(curr: collections.OrderedDict, ref: collections.OrderedDict, name: str, indent: str) -> Tuple[str, int, int, str]:
@@ -1213,27 +1213,27 @@ def get_archive_symbols(sections: Dict, archive: str, output_format: str, sectio
             for section_name in all_section_names:
                 current_item_pairs = _get_item_pairs(section_name, current.get(section_name, {}))
                 reference_item_pairs = _get_item_pairs(section_name, reference.get(section_name, {}))
-                output += os.linesep + line_format.format(section_name[:40],
+                output += "\n" + line_format.format(section_name[:40],
                                                           '<CURRENT>',
                                                           '<REFERENCE>',
-                                                          '<CURRENT> - <REFERENCE>') + os.linesep
+                                                          '<CURRENT> - <REFERENCE>') + "\n"
                 current_section_total = sum([val for _, val in current_item_pairs.items()])
                 reference_section_total = sum([val for _, val in reference_item_pairs.items()])
                 diff_section_total = current_section_total - reference_section_total
                 all_item_names = sorted(list(frozenset(current_item_pairs.keys()) |
                                              frozenset(reference_item_pairs.keys())))
                 indent = 4 * ' ' if output_format != 'csv' else ''
-                output += os.linesep.join(line_format.format(*_generate_line_tuple(current_item_pairs,
+                output += "\n".join(line_format.format(*_generate_line_tuple(current_item_pairs,
                                                                                    reference_item_pairs,
                                                                                    n,
                                                                                    indent)
                                                              ).rstrip() for n in all_item_names)
-                output += os.linesep if current_section_total > 0 or reference_section_total > 0 else ''
+                output += "\n" if current_section_total > 0 or reference_section_total > 0 else ''
                 output += line_format.format('Section total:',
                                              current_section_total,
                                              reference_section_total,
                                              '' if diff_section_total == 0 else '{:+}'.format(diff_section_total)
-                                             ).rstrip() + os.linesep
+                                             ).rstrip() + "\n"
         else:
             output += _get_output(current)
     return output
