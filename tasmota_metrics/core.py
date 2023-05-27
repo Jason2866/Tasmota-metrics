@@ -274,7 +274,7 @@ def detect_target_chip(map_file: Iterable) -> str:
     # For back-compatible with cmake in idf version before 5.0
     RE_TARGET_CMAKEv4x = re.compile(r'project_elf_src_(\S*)\.c.obj')
     # For back-compatible with make
-    RE_TARGET_MAKE = re.compile(r'^LOAD .*?/xtensa-([^-]+)-elf/')
+    RE_TARGET_MAKE = re.compile(r'^LOAD .*?/xtensa-(esp[^-]+)-elf/')
     # For PIO and RISC-V
     RE_TARGET_PIO = re.compile(r'^LOAD .*?/framework-arduinoespressif32/tools/sdk/([^-]+)/lib/')
 
