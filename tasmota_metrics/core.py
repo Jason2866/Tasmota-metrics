@@ -277,7 +277,7 @@ def detect_target_chip(map_file: Iterable) -> str:
     # For back-compatible with make
     RE_TARGET_MAKE = re.compile(r'^LOAD .*?/xtensa-(esp[^-]+)-elf/')
     # For PIO and RISC-V
-    RE_TARGET_PIO = re.compile(r'^LOAD .*?/framework-arduinoespressif32/tools/sdk/([^-]+)/lib')
+    RE_TARGET_PIO = re.compile(r'^LOAD .*?/framework-arduinoespressif32/tools/sdk/([^-]+?)/lib')
 
     for line in map_file:
         match_target = RE_TARGET.search(line)
